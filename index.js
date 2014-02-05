@@ -77,7 +77,7 @@ mdbp = {
     css: function(css, save, log) {
 
         css = new CleanCSS().minify(css);
-        css = splitsuit(css);
+        css = splitsuit(css, breakpoints, ieBreakpoint);
 
         if (css.ie) {
             log.info('saving ' + save('dev-ie', refs(css.ie), true));
