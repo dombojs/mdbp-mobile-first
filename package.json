@@ -1,0 +1,35 @@
+{
+  "name": "mdbp-mobile-first-dombo",
+  "description": "markup driven build based on SUIT and dombo",
+  "version": "0.0.1",
+  "homepage": "https://github.com/dombojs/mdbp-mobile-first",
+  "author": {
+    "name": "dshimkoski",
+    "email": "denny.webdev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dombojs/mdbp-mobile-first.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dombojs/mdbp-mobile-first/issues"
+  },
+  "keywords": [
+    "responsive",
+    "mobile",
+    "suitcss",
+    "mdbp"
+  ],
+  "dependencies": {
+    "crypto": "0.0.3",
+    "splitsuit": "0.0.1",
+    "clean-css": "~2.0.7",
+    "zlib-browserify": "0.0.3",
+    "uglify-js": "~2.4.12",
+    "autoprefixer": "~1.0.20140203"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 0.8.0"
+  }
+}
