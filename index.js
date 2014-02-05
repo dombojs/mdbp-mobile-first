@@ -7,7 +7,11 @@ var crypto = require('crypto');
 var lf = require('os').EOL;
 
 var prefixPolicy = ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1'];
-var breakpoints = [,'(max-width: 25em)', '(min-width: 25em) and (max-width: 50em)', '(min-width: 50em)'];
+var breakpoints = [,
+    '(min-width: 768px) and (max-width: 991px)',
+    '(min-width: 992px) and (max-width: 1199px)',
+    '(min-width: 1200px)'
+];
 var ieBreakpoint = 2;
 var reportGzip = true;
 
@@ -40,9 +44,14 @@ mdbp = {
         }
     },
 
+    copyFiles: true,
+
     markupDriven: function(cmp) {
-        return (~cmp.repo.indexOf('suitcss') && cmp.name !== 'base')
-            || (cmp.keywords && ~cmp.keywords.indexOf('mdbp'));
+        return (
+            ~cmp.repo.indexOf('suitcss') && cmp.name !== 'base'
+        ) || (
+            cmp.keywords && ~cmp.keywords.indexOf('mdbp')
+        );
     },
 
     cssForScan: function(css) {
@@ -85,8 +94,8 @@ mdbp = {
 
     js: function(js, save, log) {
         var orig = js.length;
-        js = uglify.minify(js, {fromString: true}).code;
         log.info('saving ' + save('dev', js, true));
+        js = uglify.minify(js, {fromString: true}).code;
         log.info('saving ' + save('build', js));
         log.info('src:  ' + String(orig) + ' bytes');
         log.info('min:  ' + String(js.length) + ' bytes');

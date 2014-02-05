@@ -1,7 +1,7 @@
 {
   "name": "mdbp-mobile-first-dombo",
   "description": "markup driven build based on SUIT and dombo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/dombojs/mdbp-mobile-first",
   "author": {
     "name": "dshimkoski",
