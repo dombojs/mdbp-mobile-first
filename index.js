@@ -8,18 +8,12 @@ var breakpoints = [,
 ];
 var ieBreakpoint = 2;
 
-var assetPrefix = {
-    css: '../../style/',
-    js: '../../script/',
-    image: '../../graphic/',
-    font: '../../fonts/'
-};
-
 var copyFiles = true;
 var reportGzip = true;
 
 var boot = 'dombojs/boot';
 var ns = 'dombojs/ui';
+
 var pseudos = /:before|:after|:hover|:active|:focus|:?:-moz[-a-z]+/g;
 
 
@@ -32,6 +26,7 @@ var CleanCSS = require('clean-css');
 var uglify = require('uglify-js');
 var crypto = require('crypto');
 var gzip = require('zlib-browserify').gzipSync;
+var path = require('path');
 var lf = require('os').EOL;
 
 mdbp = {
@@ -52,7 +47,13 @@ mdbp = {
         }
     },
 
-    assetPrefix: assetPrefix,
+    assetPrefix: {
+        css: '../../style/',
+        js: '../../script/',
+        image: '../../graphic/',
+        font: '../../fonts/'
+    },
+
     copyFiles: copyFiles,
 
     markupDriven: function(cmp) {
@@ -91,32 +92,35 @@ mdbp = {
 
     },
 
+    alias: function(repo) {
+        if (~repo.indexOf(ns)) return [
+            ns.replace('/','-')+'/index.js',
+            repo.replace('/','-')+'/deps/'+path.basename(ns)+'/index.js'
+        ];
+    },
+
     css: function(css, save, log) {
 
         var clean = new CleanCSS();
 
         css = rework(css).use(splitsuit(breakpoints, ieBreakpoint));
 
-        if (css.ie) {
+        var ie = css.ie
+            .use(remFallback())
+            .use(rework.mixin({opacity: opacity}))
+            .toString();
 
-            var ie = css.ie
-                .use(remFallback())
-                .use(rework.mixin({opacity: opacity}))
-                .toString();
-
+        if (ie) {
             log.info('saving ' + save('dev-ie', refs(ie), true));
             log.info('saving ' + save('build-ie', refs(clean.minify(ie), mdbp.assetPrefix)));
-
         }
 
-        if (css.responsive) {
+        css = css.responsive.toString();
+        css = autoprefixer(prefixPolicy).process(css).css;
 
-            css = css.responsive.toString();
-            css = autoprefixer(prefixPolicy).process(css).css;
-
+        if (css) {
             log.info('saving ' + save('dev', refs(css), true));
             log.info('saving ' + save('build', refs(clean.minify(css), mdbp.assetPrefix)));
-
         }
 
     },
