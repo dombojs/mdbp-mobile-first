@@ -9,10 +9,10 @@ var breakpoints = [,
 var ieBreakpoint = 2;
 
 var copyFiles = true;
-var reportGzip = true;
 
-var boot = 'dombojs/boot';
-var ns = 'dombojs/ui';
+
+
+
 
 var pseudos = /:before|:after|:hover|:active|:focus|:?:-moz[-a-z]+/g;
 
@@ -30,6 +30,9 @@ var path = require('path');
 var lf = require('os').EOL;
 
 mdbp = {
+
+    boot: 'dombojs/boot',
+    ns: 'dombojs/ui',
 
     paths: {
         apps: 'app',
@@ -69,7 +72,7 @@ mdbp = {
     },
 
     plugin: function(fn) {
-        return ns + '-' + fn;
+        return mdbp.ns + '-' + fn;
     },
 
     bundle: function(app) {
@@ -86,13 +89,14 @@ mdbp = {
             ]
         };
 
-        json.dependencies[boot] = '*';
+        json.dependencies[mdbp.boot] = '*';
 
         return json;
 
     },
 
     alias: function(repo) {
+        var ns = mdbp.ns;
         if (~repo.indexOf(ns)) return [
             ns.replace('/','-')+'/index.js',
             repo.replace('/','-')+'/deps/'+path.basename(ns)+'/index.js'
@@ -129,21 +133,21 @@ mdbp = {
 
         log.info('saving ' + save('dev', js, true));
 
-        var len = js.length;
+
         js = uglify.minify(js, {fromString: true}).code;
 
         log.info('saving ' + save('build', js));
-        log.info('src:  ' + len + ' bytes');
-        log.info('min:  ' + js.length + ' bytes');
 
-        if (reportGzip) log.info('gzip: ' + gzip(js).length + ' bytes');
+
+
+
 
     },
 
     commit: function(bundle, css, js, save) {
 
-        if (css.length) save('head.html', head(bundle, css[0].url, css[1].url));
-        if (js.length) save('body.html', body(bundle, js[0].url, bundle));
+        save('head.html', css.length ? head(bundle, css[0].url, css[1].url) : '');
+        save('body.html', js.length ? body(bundle, js[0].url, bundle) : '');
 
     },
 
