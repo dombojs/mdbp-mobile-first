@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "crypto": "0.0.3",
-    "uglify-js": "~2.4.12",
+    "uglify-js": "~2.8",
     "zlib-browserify": "0.0.3",
     "rework": "~0.20.2",
     "rework-rem-fallback": "~1.0.0",
